@@ -151,7 +151,7 @@ class BranchAnalyzer:
     def _add_vtable_info(self, before: BranchData, src_addr: int, comment: str) -> str:
         llil = self.bv.arch.get_instruction_low_level_il_instruction(self.bv, src_addr)
         reg_and_imm = self.get_memory_disp(llil.operands[0].tokens)
-        if reg_and_imm:
+        if reg_and_imm and reg_and_imm[0] in before.registers.keys():
             reg_value = before.get_reg_value_as_bv(reg_and_imm[0], self.modules, self.bv)
             if (symbol := self.bv.get_symbol_at(reg_value)) is not None:
                 comment += f" (vt:{hex(reg_value)}({symbol.name}))"
